@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:  # <--- 新增这行，允许在 GitHub 网页上手动点按钮触发
 
 permissions:
   contents: write
