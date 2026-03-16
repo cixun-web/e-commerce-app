@@ -1,6 +1,6 @@
 {
   "name": "tools-inline",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "自动测试工具进行质量守护",
   "main": "./out/main/index.js",
   "author": "ci-xun",
