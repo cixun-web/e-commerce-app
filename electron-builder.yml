@@ -1,0 +1,54 @@
+appId: tools-inline
+productName: 电商工具箱
+directories:
+  buildResources: build
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!resources/browsers/**'
+asarUnpack:
+  - node_modules/@ffmpeg-installer/**
+  - node_modules/@ffprobe-installer/**
+extraResources:
+  - from: resources/browsers
+    to: browsers
+win:
+  executableName: 电商工具箱
+  icon: resources/icon.png
+nsis:
+  artifactName: ${productName}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+mac:
+  entitlementsInherit: build/entitlements.mac.plist
+  extendInfo:
+    - NSCameraUsageDescription: Application requests access to the device's camera.
+    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
+    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
+    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
+  notarize: false
+dmg:
+  artifactName: ${productName}-${version}.${ext}
+linux:
+  target:
+    - AppImage
+    - snap
+    - deb
+  maintainer: electronjs.org
+  category: Utility
+appImage:
+  artifactName: ${productName}-${version}.${ext}
+npmRebuild: false
+publish:
+  provider: github
+  owner: your-github-username
+  repo: your-github-repo
+  # 如果配置了私有仓库，需要配置 token
+  # private: true
+  # token: $GH_TOKEN
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/
