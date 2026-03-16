@@ -5,21 +5,25 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # 升级到 v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4 # 升级到 v4
         with:
-          node-version: 20
+          node-version: 20 # 这里指定的是项目使用的 Node 版本，不是 Action 运行时的版本，可以用 18 或 20
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -27,15 +31,29 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      # 🔥 关键步骤：在打包前安装 Playwright 浏览器
-      # 设置环境变量 PLAYWRIGHT_BROWSERS_PATH，确保浏览器下载到 resources/browsers 目录
       - name: Install Playwright Browsers
         run: npx playwright install chromium
         env:
           PLAYWRIGHT_BROWSERS_PATH: resources/browsers
 
-      - name: Build & Release
-        # 根据当前系统自动选择打包 win 或 mac，并发布到 GitHub Releases
-        run: pnpm run build && npx electron-builder --${{ matrix.os == 'windows-latest' && 'win' || 'mac' }} -p always
+      - name: Build Electron App
+        # 针对不同系统执行不同的构建命令
+        # Windows: 只需要 npm run build (package.json 中 release 脚本包含了 win 和 mac 参数，但在 Win 上跑 mac 参数会报错，所以我们分开写)
+        # Mac: 同理
+        run: |
+          npm run build
+          npx electron-builder --${{ matrix.os == 'windows-latest' && 'win' || 'mac' }} --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Artifacts to GitHub Release
+        uses: softprops/action-gh-release@v2 # 推荐升级到 v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.zip
+            dist/*.yml
+            dist/*.blockmap
+          token: ${{ secrets.GITHUB_TOKEN }}
