@@ -44,6 +44,7 @@ jobs:
         run: |
           npm run build
           npx electron-builder --${{ matrix.os == 'windows-latest' && 'win' || 'mac' }} --publish never
+          ls -R dist
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -58,3 +59,13 @@ jobs:
             dist/*.yml
             dist/*.blockmap
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-${{ matrix.os }}
+          path: |
+            dist/*.exe
+            dist/*.dmg
+            dist/*.zip
+

@@ -19,7 +19,7 @@ win:
   executableName: 电商工具箱
   icon: resources/icon.png
 nsis:
-  artifactName: ${productName}-${version}-setup.${ext}
+  artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always
