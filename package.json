@@ -1,7 +1,7 @@
 {
-  "name": "tools-inline",
-  "version": "0.1.1",
-  "description": "自动测试工具进行质量守护",
+  "name": "e-commerce-app",
+  "version": "0.1.2",
+  "description": "电商工具箱",
   "main": "./out/main/index.js",
   "author": "ci-xun",
   "homepage": "https://electron-vite.org",

@@ -1,4 +1,4 @@
-appId: tools-inline
+appId: e-commerce-app
 productName: 电商工具箱
 directories:
   buildResources: build
@@ -19,7 +19,7 @@ win:
   executableName: 电商工具箱
   icon: resources/icon.png
 nsis:
-  artifactName: ${name}-${version}-setup.${ext}
+  artifactName: ${productName}-${version}-setup.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always

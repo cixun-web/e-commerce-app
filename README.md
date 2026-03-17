@@ -32,3 +32,11 @@
     ```js
     chromium.launchPersistentContext(userDataDir, launchOptions)
     ```
+
+## 打包并更新
+
+```bash
+git tag v*.*.*
+git push origin v*.*.*
+```
+
