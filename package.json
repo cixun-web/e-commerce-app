@@ -1,6 +1,6 @@
 {
   "name": "e-commerce-app",
-  "version": "0.1.3",
+  "version": "0.0.1",
   "description": "电商工具箱",
   "main": "./out/main/index.js",
   "author": "ci-xun",

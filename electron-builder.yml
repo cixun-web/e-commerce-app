@@ -45,8 +45,8 @@ appImage:
 npmRebuild: false
 publish:
   provider: github
-  owner: your-github-username
-  repo: your-github-repo
+  owner: cixun-web
+  repo: e-commerce-app
   # 如果配置了私有仓库，需要配置 token
   # private: true
   # token: $GH_TOKEN

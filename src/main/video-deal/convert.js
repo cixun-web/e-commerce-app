@@ -24,6 +24,9 @@ const convertVideo = (inputPath, outputPath, resolution, callback) => {
       const videoCodec = getEncoder() || 'libx264'
       console.log(videoCodec, 'videoCodec')
       ffmpeg(inputPath)
+        .videoBitrate('9800k')
+        .audioBitrate('192k')
+        .fps(30) // === 新增增强滤镜 ===
         .videoCodec(videoCodec)
         .size(normalizedResolution) // 保持比例，不足加黑边
         .outputOptions('-pix_fmt yuv420p') // 确保输出为 yuv420p 格式，兼容大多数播放器
