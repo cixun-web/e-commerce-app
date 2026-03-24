@@ -21,8 +21,8 @@ class VideoDeal {
       const p = Promise.resolve().then(async () => {
         try {
           const filePath = file.path
-          const { fileName, suffix } = getFileNameAndSuffix(filePath)
-          const saveFileName = checkFilePath(getChoicePath(rootPath), fileName, suffix)
+          const { fileName } = getFileNameAndSuffix(filePath)
+          const saveFileName = checkFilePath(getChoicePath(rootPath), fileName, '.mp4')
 
           await convertVideo(
             filePath,
@@ -67,19 +67,49 @@ class VideoDeal {
   }
   // 组合
   combine({ params, send }) {
-    const { files, filesGroup = [], rootPath, taskId } = params
+    const { files, filesGroup = [], rootPath, taskId, merge = 'false' } = params
     const works = []
     if (filesGroup.length === 0) {
       // 没有分组，直接组合
-      const videos = files.map((file) => file.path)
-      const saveFileName = checkFilePath(getChoicePath(rootPath), '合并视频')
-      const totalDuration = files.reduce((acc, file) => acc + (file.durationSec || 0), 0)
-      works.push({
-        videos,
-        url: files[0].url,
-        saveFileName,
-        totalDuration
-      })
+      if (!merge || merge === 'false') {
+        const videos = files.map((file) => file.path)
+        const saveFileName = checkFilePath(getChoicePath(rootPath), '合并视频')
+        const totalDuration = files.reduce((acc, file) => acc + (file.durationSec || 0), 0)
+        works.push({
+          videos,
+          url: files[0].url,
+          saveFileName,
+          totalDuration
+        })
+      } else {
+        // 将files进行全排列生成 合并视频-i
+        const getPermutations = (arr) => {
+          if (arr.length <= 1) return [arr]
+          const result = []
+          for (let i = 0; i < arr.length; i++) {
+            const current = arr[i]
+            const remaining = arr.slice(0, i).concat(arr.slice(i + 1))
+            const remainingPermutations = getPermutations(remaining)
+            for (const perm of remainingPermutations) {
+              result.push([current].concat(perm))
+            }
+          }
+          return result
+        }
+
+        const permutations = getPermutations(files)
+        permutations.forEach((perm, index) => {
+          const videos = perm.map((file) => file.path)
+          const saveFileName = checkFilePath(getChoicePath(rootPath), `合并视频-${index + 1}`)
+          const totalDuration = perm.reduce((acc, file) => acc + (file.durationSec || 0), 0)
+          works.push({
+            videos,
+            url: perm[perm.length - 1].url,
+            saveFileName,
+            totalDuration
+          })
+        })
+      }
     } else {
       // 将 files 内的视频与filesGroup 内的视频笛卡尔积组合
       /**

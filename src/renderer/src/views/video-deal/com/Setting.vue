@@ -8,7 +8,7 @@
     </el-menu>
     <CutSetting v-show="curMenu === '画面裁剪'" ref="cutSettingRef" />
     <CombineSetting v-show="curMenu === '视频组合'" ref="combineSettingRef" />
-    <div v-show="curMenu === '视频合并'" class="pl-2">将右侧多个视频按照顺序合并成一个视频</div>
+    <Merge v-show="curMenu === '视频合并'" ref="mergeRef" />
     <div v-show="curMenu === '视频去重'" class="pl-2">去重视频时长一致的视频</div>
   </div>
 </template>
@@ -17,16 +17,20 @@
 import { ref } from 'vue'
 import CutSetting from './CutSetting.vue'
 import CombineSetting from './CombineSetting.vue'
+import Merge from './Merge.vue'
+
 
 const curMenu = ref('画面裁剪')
 const menus = ref(['画面裁剪', '视频组合', '视频合并', '视频去重'])
 const cutSettingRef = ref(null)
 const combineSettingRef = ref(null)
+const mergeRef = ref(null)
 
 defineExpose({
   curMenu,
   cutSettingRef,
-  combineSettingRef
+  combineSettingRef,
+  mergeRef
 })
 </script>
 

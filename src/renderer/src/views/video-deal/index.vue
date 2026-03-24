@@ -107,7 +107,8 @@ const startVideoDeal = () => {
       const payload = {
         rootPath: localStorage.getItem('video-deal-choicePath') || 'downloads',
         files,
-        taskId: taskId.value
+        taskId: taskId.value,
+        merge: settingRef.value.mergeRef.merge
       }
       window.invoke({
         app: 'video-deal',

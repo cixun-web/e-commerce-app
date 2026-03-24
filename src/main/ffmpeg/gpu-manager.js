@@ -1,4 +1,5 @@
 import ffmpeg from './index'
+import os from 'os'
 
 const ENCODER_PRIORITY = [
   'h264_nvenc', // NVIDIA
@@ -66,6 +67,6 @@ const checkEncoder = (codec) => {
         if (stderr) console.error('ffmpeg stderr:', stderr)
         reject(err)
       })
-      .save('NUL') // Windows 使用 NUL，Linux/Mac 使用 /dev/null
+      .save(os.platform() === 'win32' ? 'NUL' : '/dev/null') // Windows 使用 NUL，Linux/Mac 使用 /dev/null
   })
 }

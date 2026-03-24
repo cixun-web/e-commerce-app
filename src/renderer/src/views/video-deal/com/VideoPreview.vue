@@ -212,7 +212,7 @@ defineExpose({
       .el-upload__text {
         margin-bottom: 8px;
       }
-      /deep/ .el-upload-dragger {
+      :deep(.el-upload-dragger) {
         background: transparent;
         padding: 32px 28px;
       }

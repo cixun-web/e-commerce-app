@@ -46,7 +46,7 @@ const login = async () => {
   background-color: #fff;
   margin: 0 auto;
   .login-footer {
-    /deep/ .el-form-item__content {
+    :deep(.el-form-item__content) {
       display: flex;
       justify-content: center;
       margin-left: 0 !important;
